@@ -11,81 +11,153 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
     <style>
-        /* Mobile-specific improvements */
-        @media (max-width: 768px) {
-            .mobile-nav-hidden {
-                display: none !important;
-            }
-            .mobile-nav-visible {
-                display: flex !important;
-            }
-            .mobile-text-lg {
-                font-size: 1.125rem;
-                line-height: 1.75rem;
-            }
-            .mobile-text-xl {
-                font-size: 1.25rem;
-                line-height: 1.75rem;
-            }
-            .mobile-text-2xl {
-                font-size: 1.5rem;
-                line-height: 2rem;
-            }
-            .mobile-text-3xl {
-                font-size: 1.875rem;
-                line-height: 2.25rem;
-            }
-            .mobile-text-4xl {
-                font-size: 2.25rem;
-                line-height: 2.5rem;
-            }
-            .mobile-p-4 {
-                padding: 1rem;
-            }
-            .mobile-p-6 {
-                padding: 1.5rem;
-            }
-            .mobile-p-8 {
-                padding: 2rem;
-            }
-            .mobile-py-8 {
-                padding-top: 2rem;
-                padding-bottom: 2rem;
-            }
-            .mobile-py-12 {
-                padding-top: 3rem;
-                padding-bottom: 3rem;
-            }
-            .mobile-py-16 {
-                padding-top: 4rem;
-                padding-bottom: 4rem;
-            }
-            .mobile-py-24 {
-                padding-top: 6rem;
-                padding-bottom: 6rem;
-            }
+        /* Simple, clean mobile styles */
+        body {
+            font-family: 'Inter', sans-serif;
         }
         
-        /* Touch-friendly improvements */
-        .touch-target {
+        /* Prevent iOS zoom on input focus */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"] {
+            font-size: 16px;
+        }
+        
+        /* Mobile navigation menu */
+        .mobile-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+        }
+        
+        /* Mobile menu items */
+        .mobile-menu a,
+        .mobile-menu button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 12px 16px;
+            border: none;
+            background: none;
+            font-size: 16px;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Touch-friendly buttons */
+        button, a {
             min-height: 44px;
             min-width: 44px;
         }
         
-        /* Smooth mobile animations */
-        .mobile-nav-transition {
+        /* Mobile responsive container */
+        @media (max-width: 768px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            /* Stack grid items on mobile */
+            .mobile-stack {
+                grid-template-columns: 1fr !important;
+            }
+            
+            /* Mobile form spacing */
+            .mobile-form {
+                margin: 0 1rem;
+            }
+            
+            /* Mobile button sizing */
+            .mobile-btn {
+                padding: 12px 20px;
+                font-size: 16px;
+                min-height: 48px;
+            }
+            
+            /* Ensure mobile navigation is visible */
+            .mobile-menu {
+                display: block !important;
+            }
+            
+            /* Mobile navigation toggle button */
+            #mobile-menu-toggle {
+                display: block !important;
+            }
+            
+            /* Hide desktop navigation on mobile */
+            .desktop-nav {
+                display: none !important;
+            }
+        }
+        
+        /* Desktop styles */
+        @media (min-width: 769px) {
+            .mobile-menu {
+                display: none !important;
+            }
+            
+            #mobile-menu-toggle {
+                display: none !important;
+            }
+            
+            .desktop-nav {
+                display: flex !important;
+            }
+        }
+        
+        /* Mobile menu animation */
+        .mobile-menu {
             transition: all 0.3s ease-in-out;
         }
         
-        /* Mobile form improvements */
-        .mobile-input {
-            font-size: 16px; /* Prevents zoom on iOS */
+        /* Mobile menu item hover effects */
+        .mobile-menu a:hover,
+        .mobile-menu button:hover {
+            background-color: #f9fafb;
+            color: #4f46e5;
         }
         
-        /* Mobile button improvements */
-        .mobile-button {
-            padding: 12px 20px;
-            font-size: 16px;
+        /* Mobile form improvements */
+        @media (max-width: 768px) {
+            input, select, textarea {
+                font-size: 16px !important;
+                padding: 12px 16px !important;
+                min-height: 48px !important;
+            }
+            
+            button[type="submit"] {
+                padding: 14px 20px !important;
+                font-size: 16px !important;
+                min-height: 48px !important;
+            }
+            
+            /* Mobile grid adjustments */
+            .mobile-stack {
+                grid-template-columns: 1fr !important;
+                gap: 1rem !important;
+            }
+            
+            /* Mobile modal improvements */
+            .mobile-modal {
+                width: 90vw !important;
+                max-width: 400px !important;
+                margin: 1rem !important;
+            }
+            
+            /* Mobile button improvements */
+            .mobile-button {
+                padding: 12px 20px !important;
+                font-size: 16px !important;
+                min-height: 48px !important;
+                width: 100% !important;
+            }
         }
     </style>
 </head>
@@ -96,7 +168,7 @@
             <h3 id="modal-title" class="text-xl font-bold mb-2"></h3>
             <p id="modal-message" class="text-gray-600"></p>
             <div class="mt-4 flex justify-end">
-                <button onclick="hideModal()" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors touch-target">
+                <button onclick="hideModal()" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
                     Close
                 </button>
             </div>
@@ -106,12 +178,12 @@
     <nav class="bg-white shadow-sm sticky top-0 z-40">
         <div class="container mx-auto px-4 py-4 flex items-center justify-between">
             <a href="#" onclick="showPage('home')" class="flex items-center space-x-2">
-                <span class="text-indigo-600 text-xl md:text-2xl font-bold">Stellar University</span>
+                <span class="text-indigo-600 text-lg md:text-2xl font-bold">Stellar University</span>
                 <div class="bg-indigo-600 w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-white font-bold text-xs md:text-sm">SU</div>
             </a>
             
             <!-- Desktop Navigation -->
-            <div class="hidden md:flex space-x-4 items-center">
+            <div class="desktop-nav hidden md:flex space-x-4 items-center">
                 <a href="#" onclick="showPage('home')" class="text-gray-600 hover:text-indigo-600 transition-colors">Home</a>
                 <a href="#" onclick="showPage('about')" class="text-gray-600 hover:text-indigo-600 transition-colors">About</a>
                 <a href="#" onclick="showPage('registration')" class="text-gray-600 hover:text-indigo-600 transition-colors">Register</a>
@@ -131,7 +203,7 @@
             </div>
             
             <!-- Mobile Navigation Toggle -->
-            <button id="mobile-menu-toggle" class="md:hidden p-2 rounded-md text-gray-600 hover:text-indigo-600 hover:bg-gray-100 transition-colors touch-target">
+            <button id="mobile-menu-toggle" class="md:hidden p-2 rounded-md text-gray-600 hover:text-indigo-600 hover:bg-gray-100 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
@@ -139,20 +211,20 @@
         </div>
         
         <!-- Mobile Navigation Menu -->
-        <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-200 mobile-nav-transition">
+        <div id="mobile-menu" class="md:hidden hidden mobile-menu">
             <div class="px-4 py-2 space-y-1">
-                <a href="#" onclick="showPage('home'); toggleMobileMenu()" class="block px-3 py-3 text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-md transition-colors touch-target">Home</a>
-                <a href="#" onclick="showPage('about'); toggleMobileMenu()" class="block px-3 py-3 text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-md transition-colors touch-target">About</a>
-                <a href="#" onclick="showPage('registration'); toggleMobileMenu()" class="block px-3 py-3 text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-md transition-colors touch-target">Register</a>
+                <a href="#" onclick="showPage('home'); toggleMobileMenu()" class="text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-md transition-colors">Home</a>
+                <a href="#" onclick="showPage('about'); toggleMobileMenu()" class="text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-md transition-colors">About</a>
+                <a href="#" onclick="showPage('registration'); toggleMobileMenu()" class="text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-md transition-colors">Register</a>
                 <a href="#" onclick="showPage('dashboard'); toggleMobileMenu()" 
                    id="mobileDashboardLink"
-                   class="hidden block px-3 py-3 text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-md transition-colors touch-target">Dashboard</a>
+                   class="hidden text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-md transition-colors">Dashboard</a>
                 <a href="#" onclick="showPage('login'); toggleMobileMenu()" 
                    id="mobileLoginLink"
-                   class="block px-3 py-3 text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-md transition-colors touch-target">Login</a>
+                   class="text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-md transition-colors">Login</a>
                 <button id="mobileLogoutBtn" 
                         onclick="logoutUser(); toggleMobileMenu()" 
-                        class="hidden w-full text-left px-3 py-3 text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-md transition-colors touch-target">
+                        class="w-full text-left text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-md transition-colors">
                    Logout
                 </button>
             </div>
@@ -167,20 +239,20 @@
 
         <section id="home-page" class="page-section">
             <div class="text-center py-8 md:py-12 lg:py-24">
-                <h1 class="mobile-text-3xl md:text-4xl lg:text-6xl font-extrabold text-indigo-800 leading-tight px-4">Welcome to Stellar University</h1>
-                <p class="mt-4 mobile-text-lg md:text-xl lg:text-2xl text-gray-600 max-w-2xl mx-auto px-4">
+                <h1 class="text-3xl md:text-4xl lg:text-6xl font-extrabold text-indigo-800 leading-tight px-4">Welcome to Stellar University</h1>
+                <p class="mt-4 text-lg md:text-xl lg:text-2xl text-gray-600 max-w-2xl mx-auto px-4">
                     Where the future is shaped by knowledge and innovation.
                 </p>
-                <div class="mt-8 grid md:grid-cols-2 gap-6 md:gap-8 items-center max-w-4xl mx-auto px-4">
+                <div class="mt-8 grid md:grid-cols-2 gap-6 md:gap-8 items-center max-w-4xl mx-auto px-4 mobile-stack">
                     <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
-                        <h2 class="mobile-text-xl md:text-2xl font-semibold text-indigo-700">Our Mission</h2>
-                        <p class="mt-2 text-gray-600 mobile-text-lg">
+                        <h2 class="text-xl md:text-2xl font-semibold text-indigo-700">Our Mission</h2>
+                        <p class="mt-2 text-gray-600 text-lg">
                             To empower students with a holistic education that fosters critical thinking, creativity, and a commitment to lifelong learning. We strive to create global citizens prepared to solve the world's most pressing challenges.
                         </p>
                     </div>
                     <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
-                        <h2 class="mobile-text-xl md:text-2xl font-semibold text-indigo-700">Our Vision</h2>
-                        <p class="mt-2 text-gray-600 mobile-text-lg">
+                        <h2 class="text-xl md:text-2xl font-semibold text-indigo-700">Our Vision</h2>
+                        <p class="mt-2 text-gray-600 text-lg">
                             To be a beacon of academic excellence and innovation, recognized for our impactful research and our diverse, inclusive community that inspires future leaders.
                         </p>
                     </div>
@@ -190,14 +262,14 @@
 
         <section id="about-page" class="page-section hidden">
             <div class="py-8 md:py-12 lg:py-16 px-4">
-                <h1 class="mobile-text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">About Stellar University</h1>
-                <p class="mt-4 text-gray-700 mobile-text-lg leading-relaxed">
+                <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">About Stellar University</h1>
+                <p class="mt-4 text-gray-700 text-lg leading-relaxed">
                     Stellar University, founded in 1985, has grown from a small liberal arts college into a leading institution of higher learning. Our commitment to academic rigor and a vibrant campus life has made us a top choice for students worldwide. We offer a wide range of programs across the arts, sciences, and professional fields.
                 </p>
-                <div class="mt-8 grid md:grid-cols-2 gap-6 md:gap-8">
+                <div class="mt-8 grid md:grid-cols-2 gap-6 md:gap-8 mobile-stack">
                     <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
-                        <h2 class="mobile-text-xl md:text-2xl font-semibold text-indigo-700">Campus Facilities</h2>
-                        <ul class="mt-2 text-gray-600 list-disc list-inside mobile-text-lg">
+                        <h2 class="text-xl md:text-2xl font-semibold text-indigo-700">Campus Facilities</h2>
+                        <ul class="mt-2 text-gray-600 list-disc list-inside text-lg">
                             <li>State-of-the-art laboratories</li>
                             <li>A modern library with extensive digital resources</li>
                             <li>Recreational sports complex</li>
@@ -205,8 +277,8 @@
                         </ul>
                     </div>
                     <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
-                        <h2 class="mobile-text-xl md:text-2xl font-semibold text-indigo-700">Special Programs</h2>
-                        <ul class="mt-2 text-gray-600 list-disc list-inside mobile-text-lg">
+                        <h2 class="text-xl md:text-2xl font-semibold text-indigo-700">Special Programs</h2>
+                        <ul class="mt-2 text-gray-600 list-disc list-inside text-lg">
                             <li>Stellar Scholars Research Program</li>
                             <li>Global Immersion Study Abroad</li>
                             <li>Tech Innovation Incubator</li>
@@ -218,40 +290,40 @@
         </section>
 
         <section id="registration-page" class="page-section hidden">
-            <div class="py-8 md:py-12 max-w-2xl mx-auto bg-white p-4 md:p-8 rounded-lg shadow-lg mx-4">
-                <h1 class="mobile-text-2xl md:text-3xl font-bold text-center text-gray-900 mb-6">Student Registration</h1>
-                <form onsubmit="registerUser(event)" class="space-y-4 md:space-y-6">
+            <div class="py-8 md:py-12 max-w-2xl mx-auto bg-white rounded-lg shadow-lg mobile-form">
+                <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-6 p-4 md:p-8 pb-0">Student Registration</h1>
+                <form onsubmit="registerUser(event)" class="space-y-4 md:space-y-6 p-4 md:p-8 pt-0">
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
-                        <input type="text" id="name" name="name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 mobile-input mobile-button">
+                        <input type="text" id="name" name="name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                     </div>
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
-                        <input type="email" id="email" name="email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 mobile-input mobile-button">
+                        <input type="email" id="email" name="email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                     </div>
                     <div>
                         <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-                        <input type="text" id="username" name="username" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 mobile-input mobile-button">
+                        <input type="text" id="username" name="username" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                     </div>
                     <div class="grid md:grid-cols-2 gap-4 md:gap-6">
                         <div>
                             <label for="major" class="block text-sm font-medium text-gray-700">Intended Major</label>
-                            <input type="text" id="major" name="major" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 mobile-input mobile-button">
+                            <input type="text" id="major" name="major" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         </div>
                         <div>
                             <label for="year" class="block text-sm font-medium text-gray-700">Expected Enrollment Year</label>
-                            <input type="number" id="year" name="year" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 mobile-input mobile-button">
+                            <input type="number" id="year" name="year" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         </div>
                     </div>
                     <div>
                         <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                        <input type="password" id="password" name="password" required oninput="updatePasswordStrength()" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 mobile-input mobile-button">
+                        <input type="password" id="password" name="password" required oninput="updatePasswordStrength()" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         <div id="password-strength-meter" class="mt-2 h-2 rounded-full w-full bg-gray-200">
                             <div id="password-strength-bar" class="h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
                         </div>
                         <p id="password-strength-text" class="text-sm mt-1"></p>
                     </div>
-                    <button type="submit" class="w-full py-3 md:py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors mobile-button touch-target">
+                    <button type="submit" class="w-full py-3 md:py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors mobile-btn">
                         Register
                     </button>
                 </form>
@@ -259,38 +331,38 @@
         </section>
 
         <section id="login-page" class="page-section hidden">
-            <div class="py-8 md:py-12 max-w-sm mx-auto bg-white p-4 md:p-8 rounded-lg shadow-lg mx-4">
-                <div class="text-center mb-6">
+            <div class="py-8 md:py-12 max-w-sm mx-auto bg-white rounded-lg shadow-lg mobile-form">
+                <div class="text-center mb-6 p-4 md:p-8 pb-0">
                     <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-indigo-100">
                        <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                         </svg>
                     </div>
-                    <h1 class="mobile-text-2xl md:text-3xl font-bold text-gray-900 mt-3">Member Login</h1>
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mt-3">Member Login</h1>
                 </div>
 
-                <form onsubmit="loginUser(event)" class="space-y-4 md:space-y-6">
+                <form onsubmit="loginUser(event)" class="space-y-4 md:space-y-6 p-4 md:p-8 pt-0">
                     <div>
                         <label for="login-username" class="block text-sm font-medium text-gray-700">Username</label>
-                        <input type="text" id="login-username" name="username" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 mobile-input mobile-button">
+                        <input type="text" id="login-username" name="username" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                     </div>
                     <div>
                          <div class="flex items-center justify-between">
                             <label for="login-password" class="block text-sm font-medium text-gray-700">Password</label>
                             <div class="text-sm">
-                                <a href="#" onclick="forgotPassword(event)" class="font-semibold text-indigo-600 hover:text-indigo-500 touch-target">Forgot password?</a>
+                                <a href="#" onclick="forgotPassword(event)" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
                             </div>
                         </div>
-                        <input type="password" id="login-password" name="password" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 mobile-input mobile-button">
+                        <input type="password" id="login-password" name="password" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                     </div>
-                    <button type="submit" class="w-full py-3 md:py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors mobile-button touch-target">
+                    <button type="submit" class="w-full py-3 md:py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors mobile-btn">
                         Login
                     </button>
                 </form>
 
-                <p class="mt-6 text-center text-sm text-gray-500">
+                <p class="mt-6 text-center text-sm text-gray-500 p-4 md:p-8 pt-0">
                     Not a member?
-                    <a href="#" onclick="showPage('registration')" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 touch-target">Register for an account</a>
+                    <a href="#" onclick="showPage('registration')" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Register for an account</a>
                 </p>
             </div>
         </section>
@@ -298,8 +370,8 @@
         <section id="dashboard-page" class="page-section hidden">
             <div class="py-8 md:py-12 max-w-3xl mx-auto px-4">
                 <div class="text-center mb-8 md:mb-12">
-                    <h1 class="mobile-text-3xl md:text-4xl font-bold text-gray-900 mb-4">Student Dashboard</h1>
-                    <p class="mobile-text-lg text-gray-600">Welcome to your academic journey at Stellar University</p>
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Student Dashboard</h1>
+                    <p class="text-lg text-gray-600">Welcome to your academic journey at Stellar University</p>
                 </div>
                 
                 <!-- Student Info Card -->
@@ -311,7 +383,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                                 </svg>
                             </div>
-                            <h2 class="mobile-text-xl md:text-2xl font-bold text-white">Student Information</h2>
+                            <h2 class="text-xl md:text-2xl font-bold text-white">Student Information</h2>
                         </div>
                     </div>
                     
@@ -320,21 +392,21 @@
                             <div class="flex flex-col md:flex-row md:items-center py-4 border-b border-gray-100 last:border-b-0">
                                 <div class="w-full md:w-32 text-sm font-medium text-gray-500 mb-2 md:mb-0">Full Name</div>
                                 <div class="flex-1">
-                                    <p id="dashboard-name" class="mobile-text-lg md:text-lg font-semibold text-gray-900">-</p>
+                                    <p id="dashboard-name" class="text-lg font-semibold text-gray-900">-</p>
                                 </div>
                             </div>
                             
                             <div class="flex flex-col md:flex-row md:items-center py-4 border-b border-gray-100 last:border-b-0">
                                 <div class="w-full md:w-32 text-sm font-medium text-gray-500 mb-2 md:mb-0">Major</div>
                                 <div class="flex-1">
-                                    <p id="dashboard-major" class="mobile-text-lg md:text-lg font-semibold text-gray-900">-</p>
+                                    <p id="dashboard-major" class="text-lg font-semibold text-gray-900">-</p>
                                 </div>
                             </div>
                             
                             <div class="flex flex-col md:flex-row md:items-center py-4 border-b border-gray-100 last:border-b-0">
                                 <div class="w-full md:w-32 text-sm font-medium text-gray-500 mb-2 md:mb-0">Enrollment Year</div>
                                 <div class="flex-1">
-                                    <p id="dashboard-year" class="mobile-text-lg md:text-lg font-semibold text-gray-900">-</p>
+                                    <p id="dashboard-year" class="text-lg font-semibold text-gray-900">-</p>
                                 </div>
                             </div>
                         </div>
@@ -344,8 +416,8 @@
                 <!-- Welcome Message -->
                 <div class="mt-8 text-center">
                     <div class="inline-block bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl px-4 md:px-8 py-6 border border-indigo-100">
-                        <h3 class="mobile-text-lg md:text-xl font-semibold text-indigo-900 mb-2">Ready to Excel?</h3>
-                        <p class="text-indigo-700 mobile-text-lg">Your academic journey starts here. Make the most of your university experience!</p>
+                        <h3 class="text-lg md:text-xl font-semibold text-indigo-900 mb-2">Ready to Excel?</h3>
+                        <p class="text-indigo-700 text-lg">Your academic journey starts here. Make the most of your university experience!</p>
                     </div>
                 </div>
             </div>
@@ -354,7 +426,7 @@
     </main>
 
     <footer class="bg-gray-800 text-white py-6 mt-auto">
-        <div class="container mx-auto px-4 text-center text-sm">
+        <div class="container mx-auto text-center text-sm">
             &copy; 2025 Stellar University. All rights reserved.
         </div>
     </footer>
