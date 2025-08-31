@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stellar University</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/heroicons/2.1.3/24/outline/hero-icons.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-inter min-h-screen flex flex-col antialiased">
+
+    <div id="modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden transition-opacity duration-300 z-50 justify-center items-center">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-80 transform transition-transform duration-300 scale-95">
+            <h3 id="modal-title" class="text-xl font-bold mb-2"></h3>
+            <p id="modal-message" class="text-gray-600"></p>
+            <div class="mt-4 flex justify-end">
+                <button onclick="hideModal()" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="#" onclick="showPage('home')" class="flex items-center space-x-2">
+                <span class="text-indigo-600 text-2xl font-bold">Stellar University</span>
+                <div class="bg-indigo-600 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm">SU</div>
+            </a>
+            <div class="space-x-4 flex items-center">
+                <a href="#" onclick="showPage('home')" class="text-gray-600 hover:text-indigo-600 transition-colors">Home</a>
+                <a href="#" onclick="showPage('about')" class="text-gray-600 hover:text-indigo-600 transition-colors">About</a>
+                <a href="#" onclick="showPage('registration')" class="text-gray-600 hover:text-indigo-600 transition-colors">Register</a>
+                <a href="#" onclick="showPage('dashboard')" 
+                   id="dashboardLink"
+                   class="hidden text-gray-600 hover:text-indigo-600 transition-colors">Dashboard</a>
+                <a href="#" onclick="showPage('login')" 
+                   id="loginLink"
+                   class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
+                   Login
+                </a>
+                <button id="logoutBtn" 
+                        onclick="logoutUser()" 
+                        class="hidden px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
+                   Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="bg-yellow-100 text-yellow-800 text-sm text-center py-2 px-4 shadow-sm" id="user-id">
+        User ID: Not authenticated
+    </div>
+
+    <main class="container mx-auto flex-1 p-4 md:p-8">
+
+        <section id="home-page" class="page-section">
+            <div class="text-center py-12 md:py-24">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-indigo-800 leading-tight">Welcome to Stellar University</h1>
+                <p class="mt-4 text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto">
+                    Where the future is shaped by knowledge and innovation.
+                </p>
+                <div class="mt-8 grid md:grid-cols-2 gap-8 items-center max-w-4xl mx-auto">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-semibold text-indigo-700">Our Mission</h2>
+                        <p class="mt-2 text-gray-600">
+                            To empower students with a holistic education that fosters critical thinking, creativity, and a commitment to lifelong learning. We strive to create global citizens prepared to solve the world's most pressing challenges.
+                        </p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-semibold text-indigo-700">Our Vision</h2>
+                        <p class="mt-2 text-gray-600">
+                            To be a beacon of academic excellence and innovation, recognized for our impactful research and our diverse, inclusive community that inspires future leaders.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about-page" class="page-section hidden">
+            <div class="py-12 md:py-16">
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-900">About Stellar University</h1>
+                <p class="mt-4 text-gray-700 text-lg leading-relaxed">
+                    Stellar University, founded in 1985, has grown from a small liberal arts college into a leading institution of higher learning. Our commitment to academic rigor and a vibrant campus life has made us a top choice for students worldwide. We offer a wide range of programs across the arts, sciences, and professional fields.
+                </p>
+                <div class="mt-8 grid md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-semibold text-indigo-700">Campus Facilities</h2>
+                        <ul class="mt-2 text-gray-600 list-disc list-inside">
+                            <li>State-of-the-art laboratories</li>
+                            <li>A modern library with extensive digital resources</li>
+                            <li>Recreational sports complex</li>
+                            <li>Student-run cafes and social hubs</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-semibold text-indigo-700">Special Programs</h2>
+                        <ul class="mt-2 text-gray-600 list-disc list-inside">
+                            <li>Stellar Scholars Research Program</li>
+                            <li>Global Immersion Study Abroad</li>
+                            <li>Tech Innovation Incubator</li>
+                            <li>Community Service Initiatives</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="registration-page" class="page-section hidden">
+            <div class="py-8 md:py-12 max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+                <h1 class="text-3xl font-bold text-center text-gray-900 mb-6">Student Registration</h1>
+                <form onsubmit="registerUser(event)" class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                        <input type="text" id="name" name="name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                        <input type="email" id="email" name="email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                        <input type="text" id="username" name="username" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="major" class="block text-sm font-medium text-gray-700">Intended Major</label>
+                            <input type="text" id="major" name="major" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label for="year" class="block text-sm font-medium text-gray-700">Expected Enrollment Year</label>
+                            <input type="number" id="year" name="year" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" id="password" name="password" required oninput="updatePasswordStrength()" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <div id="password-strength-meter" class="mt-2 h-2 rounded-full w-full bg-gray-200">
+                            <div id="password-strength-bar" class="h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
+                        </div>
+                        <p id="password-strength-text" class="text-sm mt-1"></p>
+                    </div>
+                    <button type="submit" class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                        Register
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <section id="login-page" class="page-section hidden">
+            <div class="py-8 md:py-12 max-w-sm mx-auto bg-white p-8 rounded-lg shadow-lg">
+                <div class="text-center mb-6">
+                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-indigo-100">
+                       <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                        </svg>
+                    </div>
+                    <h1 class="text-3xl font-bold text-gray-900 mt-3">Member Login</h1>
+                </div>
+
+                <form onsubmit="loginUser(event)" class="space-y-6">
+                    <div>
+                        <label for="login-username" class="block text-sm font-medium text-gray-700">Username</label>
+                        <input type="text" id="login-username" name="username" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                         <div class="flex items-center justify-between">
+                            <label for="login-password" class="block text-sm font-medium text-gray-700">Password</label>
+                            <div class="text-sm">
+                                <a href="#" onclick="forgotPassword(event)" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
+                            </div>
+                        </div>
+                        <input type="password" id="login-password" name="password" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    <button type="submit" class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                        Login
+                    </button>
+                </form>
+
+                <p class="mt-6 text-center text-sm text-gray-500">
+                    Not a member?
+                    <a href="#" onclick="showPage('registration')" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Register for an account</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="dashboard-page" class="page-section hidden">
+            <div class="py-12 max-w-3xl mx-auto">
+                <div class="text-center mb-12">
+                    <h1 class="text-4xl font-bold text-gray-900 mb-4">Student Dashboard</h1>
+                    <p class="text-lg text-gray-600">Welcome to your academic journey at Stellar University</p>
+                </div>
+                
+                <!-- Student Info Card -->
+                <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-8 py-6">
+                        <div class="flex items-center">
+                            <div class="bg-white bg-opacity-20 p-3 rounded-full mr-4">
+                                <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                                </svg>
+                            </div>
+                            <h2 class="text-2xl font-bold text-white">Student Information</h2>
+                        </div>
+                    </div>
+                    
+                    <div class="p-8">
+                        <div class="grid gap-6">
+                            <div class="flex items-center py-4 border-b border-gray-100 last:border-b-0">
+                                <div class="w-32 text-sm font-medium text-gray-500">Full Name</div>
+                                <div class="flex-1">
+                                    <p id="dashboard-name" class="text-lg font-semibold text-gray-900">-</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center py-4 border-b border-gray-100 last:border-b-0">
+                                <div class="w-32 text-sm font-medium text-gray-500">Major</div>
+                                <div class="flex-1">
+                                    <p id="dashboard-major" class="text-lg font-semibold text-gray-900">-</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center py-4 border-b border-gray-100 last:border-b-0">
+                                <div class="w-32 text-sm font-medium text-gray-500">Enrollment Year</div>
+                                <div class="flex-1">
+                                    <p id="dashboard-year" class="text-lg font-semibold text-gray-900">-</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Welcome Message -->
+                <div class="mt-8 text-center">
+                    <div class="inline-block bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl px-8 py-6 border border-indigo-100">
+                        <h3 class="text-xl font-semibold text-indigo-900 mb-2">Ready to Excel?</h3>
+                        <p class="text-indigo-700">Your academic journey starts here. Make the most of your university experience!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6 mt-auto">
+        <div class="container mx-auto px-4 text-center text-sm">
+            &copy; 2025 Stellar University. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        // Custom Modal Logic
+        const modalOverlay = document.getElementById('modal-overlay');
+        const modalTitle = document.getElementById('modal-title');
+        const modalMessage = document.getElementById('modal-message');
+
+        function showModal(type, message) {
+            modalTitle.textContent = type === 'success' ? 'Success!' : 'Error!';
+            modalTitle.classList.remove('text-red-600', 'text-green-600');
+            modalTitle.classList.add(type === 'success' ? 'text-green-600' : 'text-red-600');
+            modalMessage.textContent = message;
+            modalOverlay.classList.remove('hidden');
+            modalOverlay.classList.add('flex');
+        }
+
+        function hideModal() {
+            modalOverlay.classList.add('hidden');
+            modalOverlay.classList.remove('flex');
+        }
+
+        // Page Navigation Logic
+        function showPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(page => {
+                page.classList.add('hidden');
+            });
+            const activePage = document.getElementById(`${pageId}-page`);
+            if (activePage) {
+                activePage.classList.remove('hidden');
+            }
+            
+            // If navigating to dashboard, populate it with user data
+            if (pageId === 'dashboard') {
+                // Add a small delay to ensure Firebase is ready and elements are loaded
+                setTimeout(() => {
+                    populateDashboard();
+                }, 100);
+            }
+        }
+
+        // Password Strength Meter Logic
+        function updatePasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthBar = document.getElementById('password-strength-bar');
+            const strengthText = document.getElementById('password-strength-text');
+            let score = 0;
+            let text = "Too short";
+            let color = "bg-red-500"; // Use Tailwind bg colors
+
+            if (password.length >= 8) {
+                score++;
+                text = "Weak";
+                color = "bg-orange-500";
+            }
+            if (password.match(/[a-z]/) && password.match(/[A-Z]/)) {
+                score++;
+            }
+            if (password.match(/[0-9]/)) {
+                score++;
+            }
+            if (password.match(/[^a-zA-Z0-9]/)) {
+                score++;
+            }
+
+            // Update text and color based on score
+            if (score >= 3) {
+                text = "Strong";
+                color = "bg-green-500";
+            } else if (score >= 2) {
+                text = "Medium";
+                color = "bg-yellow-500";
+            }
+
+            const width = (score / 4) * 100;
+            strengthBar.style.width = `${width}%`;
+            // Remove old color classes and add the new one
+            strengthBar.classList.remove('bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-green-500');
+            if (password.length > 0) {
+                 strengthBar.classList.add(color);
+            }
+            strengthText.textContent = text;
+        }
+    </script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        // ## ADD sendPasswordResetEmail ##
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } 
+        from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, where, query, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // Firebase configuration remains the same
+        const firebaseConfig = {
+            apiKey: "AIzaSyDiY6DtTQZdm6uHhNWWh6h3FsMwaBoJzKk",
+            authDomain: "stellar-student-hub.firebaseapp.com",
+            projectId: "stellar-student-hub",
+            storageBucket: "stellar-student-hub.firebasestorage.app",
+            messagingSenderId: "494604224449",
+            appId: "1:494604224449:web:7ac5b154a7e514cf339140"
+        };
+        const appId = "stellar-student-hub";
+        
+        let db, auth;
+        
+        async function initFirebase() {
+            try {
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                
+                onAuthStateChanged(auth, (user) => {
+                    const logoutBtn = document.getElementById("logoutBtn");
+                    const loginLink = document.getElementById("loginLink");
+                    const dashboardLink = document.getElementById("dashboardLink");
+                    const registerLink = document.querySelector('a[onclick="showPage(\'registration\')"]');
+                    
+                    if (user) {
+                        document.getElementById('user-id').innerText = `User ID: ${user.uid}`;
+                        logoutBtn.classList.remove('hidden');
+                        loginLink.classList.add('hidden');
+                        dashboardLink.classList.remove('hidden');
+                        registerLink.classList.add('hidden');
+                    } else {
+                        document.getElementById('user-id').innerText = 'User ID: Not authenticated';
+                        logoutBtn.classList.add('hidden');
+                        loginLink.classList.remove('hidden');
+                        dashboardLink.classList.add('hidden');
+                        registerLink.classList.remove('hidden');
+                    }
+                });
+                
+            } catch (error) {
+                console.error("Firebase initialization failed:", error);
+                showModal('error', `Firebase initialization failed: ${error.message}`);
+            }
+        }
+
+        // Expose functions to the global scope
+        window.registerUser = registerUser;
+        window.loginUser = loginUser;
+        window.logoutUser = logoutUser;
+        // ## EXPOSE NEW forgotPassword FUNCTION ##
+        window.forgotPassword = forgotPassword;
+
+        // Make globally available from the non-module script
+        window.showPage = showPage;
+        window.updatePasswordStrength = updatePasswordStrength;
+        window.hideModal = hideModal;
+        window.showModal = showModal;
+
+        // Function to populate dashboard with user data
+        async function populateDashboard() {
+            try {
+                // Get current user from auth
+                const currentUser = auth.currentUser;
+                
+                if (currentUser) {
+                    console.log("Current user:", currentUser.uid, currentUser.email);
+                    
+                    // Since users are stored by username in registration, we need to find the username first
+                    // Look for user by email in the users collection
+                    const usersRef = collection(db, `artifacts/${appId}/public/data/users`);
+                    const q = query(usersRef, where("email", "==", currentUser.email));
+                    const querySnapshot = await getDocs(q);
+                    
+                    if (!querySnapshot.empty) {
+                        const userData = querySnapshot.docs[0].data();
+                        console.log("User data found:", userData);
+                        
+                        // Update dashboard fields
+                        document.getElementById('dashboard-name').textContent = userData.name || 'Not specified';
+                        document.getElementById('dashboard-major').textContent = userData.major || 'Not specified';
+                        document.getElementById('dashboard-year').textContent = userData.year || 'Not specified';
+                    } else {
+                        console.log("No user data found for email:", currentUser.email);
+                        // No user data found
+                        document.getElementById('dashboard-name').textContent = 'No data found';
+                        document.getElementById('dashboard-major').textContent = 'No data found';
+                        document.getElementById('dashboard-year').textContent = 'No data found';
+                    }
+                } else {
+                    console.log("No authenticated user");
+                    // No authenticated user
+                    document.getElementById('dashboard-name').textContent = 'Not authenticated';
+                    document.getElementById('dashboard-major').textContent = 'Not authenticated';
+                    document.getElementById('dashboard-year').textContent = 'Not authenticated';
+                }
+            } catch (error) {
+                console.error("Error populating dashboard:", error);
+                document.getElementById('dashboard-name').textContent = 'Error loading data';
+                document.getElementById('dashboard-major').textContent = 'Error loading data';
+                document.getElementById('dashboard-year').textContent = 'Error loading data';
+            }
+        }
+
+        // Make populateDashboard globally available
+        window.populateDashboard = populateDashboard;
+
+        async function registerUser(event) {
+             event.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const username = document.getElementById("username").value;
+            const name = document.getElementById("name").value;
+            const major = document.getElementById("major").value;
+            const year = document.getElementById("year").value;
+
+            if (!email || !password || !username || !name) {
+                showModal('error', 'Please fill out all required fields.');
+                return;
+            }
+
+            try {
+                const userRef = doc(db, `artifacts/${appId}/public/data/users`, username);
+                const docSnap = await getDoc(userRef);
+
+                if (docSnap.exists()) {
+                    showModal('error', 'Username already exists. Please choose a different one.');
+                    return;
+                }
+
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                
+                await setDoc(doc(db, `artifacts/${appId}/public/data/users`, username), {
+                    name, email, username, major, year,
+                    uid: userCredential.user.uid,
+                    createdAt: new Date()
+                });
+
+                showModal('success', 'Registration successful! Redirecting to login...');
+                setTimeout(() => showPage('login'), 1500);
+
+            } catch (error) {
+                console.error("Error during registration:", error);
+                showModal('error', `Registration failed: ${error.message}`);
+            }
+        }
+
+        async function loginUser(event) {
+            event.preventDefault();
+            const username = document.getElementById("login-username").value;
+            const password = document.getElementById("login-password").value;
+
+            if (!username || !password) {
+                showModal('error', 'Please enter your username and password.');
+                return;
+            }
+
+            try {
+                const userRef = doc(db, `artifacts/${appId}/public/data/users`, username);
+                const docSnap = await getDoc(userRef);
+
+                if (!docSnap.exists()) {
+                    showModal('error', 'Invalid username or password.');
+                    return;
+                }
+
+                const userData = docSnap.data();
+                const email = userData.email;
+
+                await signInWithEmailAndPassword(auth, email, password);
+
+                showModal('success', `Login successful! Welcome back, ${userData.name}.`);
+                setTimeout(() => {
+                    hideModal();
+                    showPage('dashboard');
+                }, 1500);
+
+            } catch (error) {
+                console.error("Error during login:", error);
+                showModal('error', `Login failed: Invalid username or password.`);
+            }
+        }
+
+        async function logoutUser() {
+            try {
+                await signOut(auth);
+                showModal('success', 'You have been logged out.');
+                showPage('login');
+            } catch (error) {
+                console.error("Error during logout:", error);
+                showModal('error', `Logout failed: ${error.message}`);
+            }
+        }
+
+        // ## NEW FORGOT PASSWORD FUNCTION ##
+        async function forgotPassword(event) {
+            event.preventDefault();
+            const email = prompt("Please enter your email address to reset your password:");
+                
+            if (!email) {
+                showModal('error', 'Email address is required for password reset.');
+                return;
+            }
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showModal('success', 'Password reset email sent! Please check your inbox.');
+            } catch (error) {
+                console.error("Error sending password reset email:", error);
+                showModal('error', `Could not send reset email: ${error.message}`);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            initFirebase();
+            showPage('home');
+        });
+
+    </script>
+</body>
+</html>
