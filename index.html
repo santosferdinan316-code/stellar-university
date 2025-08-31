@@ -85,10 +85,13 @@
             
 
             
-            /* Mobile navigation toggle button */
-            #mobile-menu-toggle {
-                display: block !important;
-            }
+                    /* Mobile navigation toggle button */
+        #mobile-menu-toggle {
+            display: block !important;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            cursor: pointer;
+        }
             
             /* Hide desktop navigation on mobile */
             .desktop-nav {
@@ -171,13 +174,24 @@
                 margin: 1rem !important;
             }
             
-            /* Mobile button improvements */
-            .mobile-button {
-                padding: 12px 20px !important;
-                font-size: 16px !important;
-                min-height: 48px !important;
-                width: 100% !important;
-            }
+                    /* Mobile button improvements */
+        .mobile-button {
+            padding: 12px 20px !important;
+            font-size: 16px !important;
+            min-height: 48px !important;
+            width: 100% !important;
+        }
+        
+        /* Enhanced mobile navigation toggle */
+        #mobile-menu-toggle {
+            min-height: 48px !important;
+            min-width: 48px !important;
+            padding: 12px !important;
+            touch-action: manipulation !important;
+            -webkit-tap-highlight-color: transparent !important;
+            -webkit-user-select: none !important;
+            user-select: none !important;
+        }
         }
     </style>
 </head>
@@ -474,6 +488,45 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
                 `;
+            }
+        }
+
+        // Enhanced mobile touch handling
+        function addMobileTouchHandling() {
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            if (mobileMenuToggle) {
+                // Remove existing event listeners
+                mobileMenuToggle.replaceWith(mobileMenuToggle.cloneNode(true));
+                const newToggle = document.getElementById('mobile-menu-toggle');
+                
+                // Add multiple event types for maximum compatibility
+                newToggle.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Touch start detected');
+                    toggleMobileMenu();
+                }, { passive: false });
+                
+                newToggle.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Touch end detected');
+                }, { passive: false });
+                
+                newToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Click detected');
+                    toggleMobileMenu();
+                });
+                
+                // Add pointer events for modern browsers
+                newToggle.addEventListener('pointerdown', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Pointer down detected');
+                    toggleMobileMenu();
+                }, { passive: false });
             }
         }
 
@@ -821,15 +874,8 @@
             initFirebase();
             showPage('home');
             
-            // Initialize mobile menu functionality
-            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-            if (mobileMenuToggle) {
-                mobileMenuToggle.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    toggleMobileMenu();
-                });
-            }
+            // Initialize enhanced mobile touch handling
+            addMobileTouchHandling();
         });
 
     </script>
