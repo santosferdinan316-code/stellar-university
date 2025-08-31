@@ -81,10 +81,7 @@
                 min-height: 48px;
             }
             
-            /* Ensure mobile navigation is visible */
-            .mobile-menu {
-                display: block !important;
-            }
+
             
             /* Mobile navigation toggle button */
             #mobile-menu-toggle {
@@ -115,6 +112,27 @@
         /* Mobile menu animation */
         .mobile-menu {
             transition: all 0.3s ease-in-out;
+        }
+        
+        /* Mobile menu items */
+        .mobile-menu a,
+        .mobile-menu button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 12px 16px;
+            border: none;
+            background: none;
+            font-size: 16px;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Touch-friendly buttons */
+        button, a {
+            min-height: 44px;
+            min-width: 44px;
         }
         
         /* Mobile menu item hover effects */
