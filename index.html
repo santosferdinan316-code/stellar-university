@@ -34,6 +34,8 @@
             border-top: 1px solid #e5e7eb;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             z-index: 50;
+            width: 100%;
+            min-height: 200px;
         }
         
         /* Mobile menu items */
@@ -221,7 +223,7 @@
             </div>
             
             <!-- Mobile Navigation Toggle -->
-            <button id="mobile-menu-toggle" class="md:hidden p-2 rounded-md text-gray-600 hover:text-indigo-600 hover:bg-gray-100 transition-colors">
+            <button id="mobile-menu-toggle" onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-md text-gray-600 hover:text-indigo-600 hover:bg-gray-100 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
@@ -452,10 +454,12 @@
     <script>
         // Mobile Navigation Toggle
         function toggleMobileMenu() {
+            console.log('toggleMobileMenu called!');
             const mobileMenu = document.getElementById('mobile-menu');
             const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
             
             if (mobileMenu.classList.contains('hidden')) {
+                console.log('Opening mobile menu');
                 mobileMenu.classList.remove('hidden');
                 mobileMenuToggle.innerHTML = `
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -463,6 +467,7 @@
                     </svg>
                 `;
             } else {
+                console.log('Closing mobile menu');
                 mobileMenu.classList.add('hidden');
                 mobileMenuToggle.innerHTML = `
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -487,17 +492,7 @@
             }
         });
 
-        // Add click event listener to mobile menu toggle button
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-            if (mobileMenuToggle) {
-                mobileMenuToggle.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    toggleMobileMenu();
-                });
-            }
-        });
+
 
         // Custom Modal Logic
         const modalOverlay = document.getElementById('modal-overlay');
@@ -582,18 +577,6 @@
 
         // Make mobile navigation functions globally available
         window.toggleMobileMenu = toggleMobileMenu;
-        
-        // Initialize mobile menu functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-            if (mobileMenuToggle) {
-                mobileMenuToggle.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    toggleMobileMenu();
-                });
-            }
-        });
     </script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -837,6 +820,16 @@
         document.addEventListener('DOMContentLoaded', () => {
             initFirebase();
             showPage('home');
+            
+            // Initialize mobile menu functionality
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleMobileMenu();
+                });
+            }
         });
 
     </script>
