@@ -192,6 +192,14 @@
             -webkit-user-select: none !important;
             user-select: none !important;
         }
+        
+        /* Force hide elements when they should be hidden */
+        .hidden {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
         }
     </style>
 </head>
@@ -258,7 +266,7 @@
                    class="text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-md transition-colors">Login</a>
                 <button id="mobileLogoutBtn" 
                         onclick="logoutUser(); toggleMobileMenu()" 
-                        class="w-full text-left text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-md transition-colors">
+                        class="hidden w-full text-left text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-md transition-colors">
                    Logout
                 </button>
             </div>
@@ -658,6 +666,8 @@
                 db = getFirestore(app);
                 
                 onAuthStateChanged(auth, (user) => {
+                    console.log('Auth state changed:', user ? 'User logged in' : 'User logged out');
+                    
                     const logoutBtn = document.getElementById("logoutBtn");
                     const loginLink = document.getElementById("loginLink");
                     const dashboardLink = document.getElementById("dashboardLink");
@@ -668,39 +678,77 @@
                     const mobileLoginLink = document.getElementById("mobileLoginLink");
                     const mobileDashboardLink = document.getElementById("mobileDashboardLink");
                     
+                    // Debug: Log all found elements
+                    console.log('Found elements:', {
+                        logoutBtn: logoutBtn,
+                        loginLink: loginLink,
+                        dashboardLink: dashboardLink,
+                        registerLink: registerLink,
+                        mobileLogoutBtn: mobileLogoutBtn,
+                        mobileLoginLink: mobileLoginLink,
+                        mobileDashboardLink: mobileDashboardLink
+                    });
+                    
                     if (user) {
+                        console.log('User is logged in, updating navigation...');
                         document.getElementById('user-id').innerText = `User ID: ${user.uid}`;
                         
                         // Desktop navigation
-                        logoutBtn.classList.remove('hidden');
-                        loginLink.classList.add('hidden');
-                        dashboardLink.classList.remove('hidden');
-                        registerLink.classList.add('hidden');
+                        if (logoutBtn) logoutBtn.classList.remove('hidden');
+                        if (loginLink) loginLink.classList.add('hidden');
+                        if (dashboardLink) dashboardLink.classList.remove('hidden');
+                        if (registerLink) registerLink.classList.add('hidden');
                         
                         // Mobile navigation
-                        mobileLogoutBtn.classList.remove('hidden');
-                        mobileLoginLink.classList.add('hidden');
-                        mobileDashboardLink.classList.remove('hidden');
+                        if (mobileLogoutBtn) {
+                            mobileLogoutBtn.classList.remove('hidden');
+                            mobileLogoutBtn.style.display = 'block';
+                        }
+                        if (mobileLoginLink) {
+                            mobileLoginLink.classList.add('hidden');
+                            mobileLoginLink.style.display = 'none';
+                        }
+                        if (mobileDashboardLink) {
+                            mobileDashboardLink.classList.remove('hidden');
+                            mobileDashboardLink.style.display = 'block';
+                        }
                     } else {
+                        console.log('User is logged out, updating navigation...');
                         document.getElementById('user-id').innerText = 'User ID: Not authenticated';
                         
                         // Desktop navigation
-                        logoutBtn.classList.add('hidden');
-                        loginLink.classList.remove('hidden');
-                        dashboardLink.classList.add('hidden');
-                        registerLink.classList.remove('hidden');
+                        if (logoutBtn) logoutBtn.classList.add('hidden');
+                        if (loginLink) loginLink.classList.remove('hidden');
+                        if (dashboardLink) dashboardLink.classList.add('hidden');
+                        if (registerLink) registerLink.classList.remove('hidden');
                         
                         // Mobile navigation
-                        mobileLogoutBtn.classList.add('hidden');
-                        mobileLoginLink.classList.remove('hidden');
-                        mobileDashboardLink.classList.add('hidden');
+                        if (mobileLogoutBtn) {
+                            mobileLogoutBtn.classList.add('hidden');
+                            mobileLogoutBtn.style.display = 'none';
+                        }
+                        if (mobileLoginLink) {
+                            mobileLoginLink.classList.remove('hidden');
+                            mobileLoginLink.style.display = 'block';
+                        }
+                        if (mobileDashboardLink) {
+                            mobileDashboardLink.classList.add('hidden');
+                            mobileDashboardLink.style.display = 'none';
+                        }
                     }
-                });
-                
-            } catch (error) {
-                console.error("Firebase initialization failed:", error);
-                showModal('error', `Firebase initialization failed: ${error.message}`);
-            }
+                                 });
+                 
+                 // Update navigation state after Firebase auth is ready
+                 setTimeout(() => {
+                     console.log('Firebase auth ready, updating navigation state...');
+                     updateNavigationState();
+                     checkNavigationState();
+                 }, 200);
+                 
+             } catch (error) {
+                 console.error("Firebase initialization failed:", error);
+                 showModal('error', `Firebase initialization failed: ${error.message}`);
+             }
         }
 
         // Expose functions to the global scope
@@ -763,6 +811,172 @@
 
         // Make populateDashboard globally available
         window.populateDashboard = populateDashboard;
+
+        // Function to manually update navigation state
+        function updateNavigationState() {
+            const user = auth.currentUser;
+            console.log('Manually updating navigation state for user:', user);
+            
+            const logoutBtn = document.getElementById("logoutBtn");
+            const loginLink = document.getElementById("loginLink");
+            const dashboardLink = document.getElementById("dashboardLink");
+            const registerLink = document.querySelector('a[onclick="showPage(\'registration\')"]');
+            
+            // Mobile navigation elements
+            const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
+            const mobileLoginLink = document.getElementById("mobileLoginLink");
+            const mobileDashboardLink = document.getElementById("mobileDashboardLink");
+            
+            // Debug: Log all found elements
+            console.log('Navigation elements found:', {
+                logoutBtn: logoutBtn,
+                loginLink: loginLink,
+                dashboardLink: dashboardLink,
+                registerLink: registerLink,
+                mobileLogoutBtn: mobileLogoutBtn,
+                mobileLoginLink: mobileLoginLink,
+                mobileDashboardLink: mobileDashboardLink
+            });
+            
+            if (user) {
+                console.log('User is logged in, updating navigation...');
+                document.getElementById('user-id').innerText = `User ID: ${user.uid}`;
+                
+                // Desktop navigation
+                if (logoutBtn) logoutBtn.classList.remove('hidden');
+                if (loginLink) loginLink.classList.add('hidden');
+                if (dashboardLink) dashboardLink.classList.remove('hidden');
+                if (registerLink) registerLink.classList.add('hidden');
+                
+                // Mobile navigation
+                if (mobileLogoutBtn) {
+                    mobileLogoutBtn.classList.remove('hidden');
+                    mobileLogoutBtn.style.display = 'block';
+                }
+                if (mobileLoginLink) {
+                    mobileLoginLink.classList.add('hidden');
+                    mobileLoginLink.style.display = 'none';
+                }
+                if (mobileDashboardLink) {
+                    mobileDashboardLink.classList.remove('hidden');
+                    mobileDashboardLink.style.display = 'block';
+                }
+            } else {
+                console.log('User is logged out, updating navigation...');
+                document.getElementById('user-id').innerText = 'User ID: Not authenticated';
+                
+                // Desktop navigation
+                if (logoutBtn) logoutBtn.classList.add('hidden');
+                if (loginLink) loginLink.classList.remove('hidden');
+                if (dashboardLink) dashboardLink.classList.add('hidden');
+                if (registerLink) registerLink.classList.remove('hidden');
+                
+                // Mobile navigation
+                if (mobileLogoutBtn) {
+                    mobileLogoutBtn.classList.add('hidden');
+                    mobileLogoutBtn.style.display = 'none';
+                }
+                if (mobileLoginLink) {
+                    mobileLoginLink.classList.remove('hidden');
+                    mobileLoginLink.style.display = 'block';
+                }
+                if (mobileDashboardLink) {
+                    mobileDashboardLink.classList.add('hidden');
+                    mobileDashboardLink.style.display = 'none';
+                }
+            }
+        }
+
+        // Make updateNavigationState globally available
+        window.updateNavigationState = updateNavigationState;
+        
+        // Function to check and fix navigation state
+        function checkNavigationState() {
+            console.log('Checking navigation state...');
+            const user = auth.currentUser;
+            
+            // Get all navigation elements
+            const logoutBtn = document.getElementById("logoutBtn");
+            const loginLink = document.getElementById("loginLink");
+            const dashboardLink = document.getElementById("dashboardLink");
+            const registerLink = document.querySelector('a[onclick="showPage(\'registration\')"]');
+            
+            // Mobile navigation elements
+            const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
+            const mobileLoginLink = document.getElementById("mobileLoginLink");
+            const mobileDashboardLink = document.getElementById("mobileDashboardLink");
+            
+            if (user) {
+                console.log('User is logged in, ensuring correct navigation state...');
+                // Desktop navigation
+                if (logoutBtn) logoutBtn.classList.remove('hidden');
+                if (loginLink) loginLink.classList.add('hidden');
+                if (dashboardLink) dashboardLink.classList.remove('hidden');
+                if (registerLink) registerLink.classList.add('hidden');
+                
+                // Mobile navigation
+                if (mobileLogoutBtn) {
+                    mobileLogoutBtn.classList.remove('hidden');
+                    mobileLogoutBtn.style.display = 'block';
+                }
+                if (mobileLoginLink) {
+                    mobileLoginLink.classList.add('hidden');
+                    mobileLoginLink.style.display = 'none';
+                }
+                if (mobileDashboardLink) {
+                    mobileDashboardLink.classList.remove('hidden');
+                    mobileDashboardLink.style.display = 'block';
+                }
+            } else {
+                console.log('User is logged out, ensuring correct navigation state...');
+                // Desktop navigation
+                if (logoutBtn) logoutBtn.classList.add('hidden');
+                if (loginLink) loginLink.classList.remove('hidden');
+                if (dashboardLink) dashboardLink.classList.add('hidden');
+                if (registerLink) registerLink.classList.remove('hidden');
+                
+                // Mobile navigation - Force hide with both class and style
+                if (mobileLogoutBtn) {
+                    mobileLogoutBtn.classList.add('hidden');
+                    mobileLogoutBtn.style.display = 'none';
+                    console.log('Forced mobile logout button to hide');
+                }
+                if (mobileLoginLink) {
+                    mobileLoginLink.classList.remove('hidden');
+                    mobileLoginLink.style.display = 'block';
+                }
+                if (mobileDashboardLink) {
+                    mobileDashboardLink.classList.add('hidden');
+                    mobileDashboardLink.style.display = 'none';
+                }
+            }
+        }
+        
+        // Make checkNavigationState globally available
+        window.checkNavigationState = checkNavigationState;
+        
+        // Debug function to inspect current navigation state
+        function debugNavigationState() {
+            console.log('=== DEBUG NAVIGATION STATE ===');
+            const user = auth.currentUser;
+            console.log('Current user:', user);
+            
+            const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
+            const mobileLoginLink = document.getElementById("mobileLoginLink");
+            
+            console.log('Mobile logout button:', mobileLogoutBtn);
+            console.log('Mobile logout button classes:', mobileLogoutBtn ? mobileLogoutBtn.className : 'null');
+            console.log('Mobile logout button hidden:', mobileLogoutBtn ? mobileLogoutBtn.classList.contains('hidden') : 'null');
+            
+            console.log('Mobile login link:', mobileLoginLink);
+            console.log('Mobile login link classes:', mobileLoginLink ? mobileLoginLink.className : 'null');
+            console.log('Mobile login link hidden:', mobileLoginLink ? mobileLoginLink.classList.contains('hidden') : 'null');
+            
+            console.log('=== END DEBUG ===');
+        }
+        
+        // Make debug function globally available
+        window.debugNavigationState = debugNavigationState;
 
         async function registerUser(event) {
              event.preventDefault();
@@ -828,11 +1042,16 @@
 
                 await signInWithEmailAndPassword(auth, email, password);
 
-                showModal('success', `Login successful! Welcome back, ${userData.name}.`);
-                setTimeout(() => {
-                    hideModal();
-                    showPage('dashboard');
-                }, 1500);
+                                 showModal('success', `Login successful! Welcome back, ${userData.name}.`);
+                 setTimeout(() => {
+                     hideModal();
+                     showPage('dashboard');
+                     // Update navigation state after successful login
+                     setTimeout(() => {
+                         updateNavigationState();
+                         checkNavigationState();
+                     }, 100);
+                 }, 1500);
 
             } catch (error) {
                 console.error("Error during login:", error);
@@ -843,8 +1062,13 @@
         async function logoutUser() {
             try {
                 await signOut(auth);
-                showModal('success', 'You have been logged out.');
-                showPage('login');
+                                 showModal('success', 'You have been logged out.');
+                 showPage('login');
+                 // Update navigation state after logout
+                 setTimeout(() => {
+                     updateNavigationState();
+                     checkNavigationState();
+                 }, 100);
             } catch (error) {
                 console.error("Error during logout:", error);
                 showModal('error', `Logout failed: ${error.message}`);
@@ -876,6 +1100,30 @@
             
             // Initialize enhanced mobile touch handling
             addMobileTouchHandling();
+            
+            // Force update navigation state after DOM is loaded
+            setTimeout(() => {
+                console.log('DOM loaded, forcing navigation state update...');
+                updateNavigationState();
+                checkNavigationState();
+                
+                // Force a second check after a longer delay to ensure everything is loaded
+                setTimeout(() => {
+                    console.log('Second check after DOM load...');
+                    checkNavigationState();
+                }, 1000);
+            }, 500);
+            
+            // Set up periodic navigation state checks (but only if needed)
+            let lastAuthState = null;
+            setInterval(() => {
+                const currentUser = auth.currentUser;
+                if (currentUser !== lastAuthState) {
+                    console.log('Auth state changed, updating navigation...');
+                    lastAuthState = currentUser;
+                    checkNavigationState();
+                }
+            }, 5000); // Check every 5 seconds, but only update if state changed
         });
 
     </script>
